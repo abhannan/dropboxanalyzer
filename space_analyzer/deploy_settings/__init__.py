@@ -1,7 +1,7 @@
 import dj_database_url
 from space_analyzer.settings import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
