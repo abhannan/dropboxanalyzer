@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath space_analyzer space_analyzer.deploy --log-file -

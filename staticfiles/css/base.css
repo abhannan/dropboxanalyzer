@@ -1,0 +1,32 @@
+body {
+    font-family: "Montserrat", "Roboto", Helvetica, sans-serif;
+    min-height: 100%;
+}
+.button-wrapper {
+    text-align: center;
+    margin-top: 25vh;
+}
+.btn btn-primary btn-lg {
+    position: absolute;
+    top: 50%;
+}
+h1 {
+    margin-top: 20px;
+    text-align: center;
+}
+h2 {
+    position: absolute;
+}
+.reg-form {
+    background: #E3EEFC;
+    padding: 20px 20px 20px;
+    border-radius: 10px;
+    width: 40vw;
+    height: 500px;
+    font-size: 15px;
+}
+.logout {
+    text-align: right;
+    padding-right: 30px;
+    padding-top: 5px;
+}

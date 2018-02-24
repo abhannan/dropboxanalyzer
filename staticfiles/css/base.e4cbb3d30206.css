@@ -1,0 +1,213 @@
+body {
+    font-family: "Montserrat", "Roboto", Helvetica, sans-serif;
+    background-color: #E8E8E9;
+}
+
+.bar.total rect {
+        fill: #64B0CC;
+}
+.bar.total rect:hover {
+    opacity: 0.6;
+}  
+.bar.positive rect {
+    fill: #53C79F;
+}
+.bar.positive rect:hover {
+    opacity: 0.6;
+}
+.bar.negative rect {
+    fill: #CA6F96;
+}
+.bar.negative rect:hover {
+    opacity: 0.6;
+}
+.bar line.connector {
+    stroke: black;
+    stroke-dasharray: 2;
+}
+
+.bar text {
+    fill: black;
+    font: 11px sans-serif;
+    text-anchor: middle;
+    opacity: 0.8;
+}
+
+.axis text {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+.chart {
+    background-color: white;
+    margin-left: 10px;
+}
+.rasmCasm-chart {
+    background-color: white;
+    margin-left: 10px;
+}
+#total-rev-card {
+    background-color: #53C79F;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#total-costs-card {
+    background-color: #CA6F96;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#capacity-card {
+    background-color: #64B0CC;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#traffic-card {
+    background-color: #E5C072;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#load-factor-card {
+    background-color: #7A6FCA;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#yield-card {
+    background-color: #0C5A81;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#fuel-card {
+    background-color: #E58C72;
+    margin-top: 10px;
+    color: white;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+}
+#total-rev-card:hover,
+#total-costs-card:hover,
+#capacity-card:hover,
+#traffic-card:hover,
+#load-factor-card:hover,
+#yield-card:hover,
+#fuel-card:hover {
+    background-color: #343A40;
+    cursor: pointer;
+}
+hr {
+    border-top: 1px solid #E8E8E9;
+    margin: 10px; 
+}
+.card {
+    float: left;
+    width: 10rem;
+    height: 6rem;
+    margin-left: 20px;
+}
+.card-title {
+    font-size: 1em;
+    text-align: center;
+}
+.card-text {
+    font-size: 1em;
+    text-align: center;
+    margin-top: -5;
+}
+h1 {
+    margin: 0;
+}
+h2 {
+    color: white;
+    float: left;
+    position: relative;
+}
+.panel-header {
+    background-color: #F4F4F4;
+    border-radius: 2px 2px 0 0;
+    border-bottom: 2px solid #DBDBDB;
+    padding: 10px 20px 10px 20px;
+    margin-top: 20px;
+    margin-left: 10px;
+    box-sizing: border-box;
+}
+#waterfall-wrapper {
+    min-width: 400px;
+    overflow: hidden;
+    display: inline-block;
+    margin-left: 10px;
+}
+.panel-title {
+    color: #6e6e74;
+    font-size: 1.5em;
+}
+
+#airline-selected {
+    width: 300px;
+}
+.btn-outline-success {
+    color: aqua;
+    margin-left: 00px;
+}
+.yearTag {
+    padding-right: 20px;
+}
+.navbar-fixed-bottom {
+    background-color: #2C3E50;
+    color: white;
+    text-align: center;
+    clear: both;
+    bottom: 0;
+}
+.barRevenue {
+    fill: #53C79F;
+}
+.barCosts {
+    fill: #CA6F96;
+}
+.barLoadFactor {
+    fill: #7A6FCA;
+}
+.barYield {
+    fill: #0C5A81;
+}
+.barFuel {
+    fill: #E58C72;
+}
+.barRevenue:hover,
+.barCosts:hover,
+.barLoadFactor:hover,
+.barYield:hover,
+.barFuel:hover,
+.barRasmCasm:hover {
+  opacity: 0.6;
+}

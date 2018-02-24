@@ -1,0 +1,349 @@
+{% extends 'analyzer/index.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<!doctype html>
+
+<html>
+    <head>
+        <title>
+            {% block title %}
+                    Dashboard
+            {% endblock title %}
+        </title>
+            {% block header %}
+                <h2>
+                    Dashboard
+                </h2>
+            {% endblock header %}
+       
+        
+        {% block content %}
+
+        <script>
+        {% block jquery %}
+        
+         $(document).ready(function() { 
+             
+        function fileSize(bytes) {
+            var exp = Math.log(bytes) / Math.log(1024) | 0;
+            var result = (bytes / Math.pow(1024, exp)).toFixed(0);
+
+            return result + ' ' + (exp == 0 ? 'bytes': 'KMGTPEZY'[exp - 1] + 'B');
+        }
+
+        $.ajax({
+            method: "GET",
+            url: "{% url 'dashboard-data' %}",
+            success: function(data){
+                
+                // Files Count
+                
+                var imagesCount = data[0].files_categories.Images;
+                var audiosCount = data[0].files_categories.Audios;
+                var videosCount = data[0].files_categories.Videos;
+                var documentsCount = data[0].files_categories.Documents;
+                var othersCount = data[0].files_categories.Others;
+     
+                document.getElementById("imagesNumber").append(imagesCount + ' Files')
+                document.getElementById("audiosNumber").append(audiosCount + ' Files')
+                document.getElementById("videosNumber").append(videosCount + ' Files')
+                document.getElementById("docsNumber").append(documentsCount + ' Files')
+                document.getElementById("othersNumber").append(othersCount + ' Files')
+                document.getElementById("allNumber").append(imagesCount+audiosCount+videosCount+
+                                                            documentsCount+othersCount  + ' Files')
+                         
+                
+                // Files Size
+
+                var imagesSize = data[0].files_categories_sizes.Images;
+                var audiosSize = data[0].files_categories_sizes.Audios;
+                var videosSize = data[0].files_categories_sizes.Videos;
+                var documentsSize = data[0].files_categories_sizes.Documents;
+                var othersSize = data[0].files_categories_sizes.Others;
+                var totalSize = (imagesSize+audiosSize+videosSize+documentsSize+othersSize)
+     
+                document.getElementById("imagesSize").append(fileSize(imagesSize))
+                document.getElementById("audiosSize").append(fileSize(audiosSize))
+                document.getElementById("videosSize").append(fileSize(videosSize))
+                document.getElementById("docsSize").append(fileSize(documentsSize))
+                document.getElementById("othersSize").append(fileSize(othersSize))
+                document.getElementById("allSize").append(fileSize(totalSize))
+                
+                // Files Weight
+                
+                var imagesWeight = (imagesSize/totalSize)
+                var audiosWeight = (audiosSize/totalSize)
+                var videosWeight = (videosSize/totalSize)
+                var docsWeight = (documentsSize/totalSize)
+                var othersWeight = (othersSize/totalSize)
+                var totalWeight = (totalSize/totalSize)
+                
+                document.getElementById("imagesWeight").append((imagesWeight*100).toFixed(0) + '%')
+                document.getElementById("audiosWeight").append((audiosWeight*100).toFixed(0) + '%')
+                document.getElementById("videosWeight").append((videosWeight*100).toFixed(0) + '%')
+                document.getElementById("docsWeight").append((docsWeight*100).toFixed(0) + '%')
+                document.getElementById("othersWeight").append((othersWeight*100).toFixed(0) + '%')
+                document.getElementById("allWeight").append((totalWeight*100).toFixed(0) + '%')
+
+                
+        
+        // Files and Folders Count 
+                document.getElementById("filesRow").append(data[0].files_count)
+                document.getElementById("foldersRow").append(data[0].folders_count)
+                document.getElementById("totalRow").append(data[0].files_count+data[0].folders_count)
+                
+        // Space Chart
+            var used_space =  data[0].space_used;
+            var allocated_space = data[0].space_allocated;
+            var space_available = data[0].space_allocated-data[0].space_used
+                if (space_available < 0) {
+                    space_available = 0
+                } else {
+                    space_available = data[0].space_allocated-data[0].space_used
+                }
+            var canvas = document.getElementById("usageChart");
+            var ctx = canvas.getContext('2d');
+             Chart.defaults.global.defaultFontColor = 'blue';
+             Chart.defaults.global.defaultFontSize = 16;
+
+            var data = {
+                labels: ["Used", "Available"],
+                  datasets: [
+                    {
+                        fill: true,
+                        backgroundColor: [
+                            '#0062FF',
+                            'white'],
+                        data: [data[0].space_used, space_available],
+                        borderColor:	['black', 'black'],
+                        borderWidth: [2,2]
+                    }
+                ]
+            };
+
+            var options = {
+                    title: {
+                              display: true,
+                              text: fileSize(used_space) +' / ' + fileSize(allocated_space),
+                              position: 'bottom'
+                          },
+                    tooltips: {
+                              enabled: false,
+
+                          },
+                
+            };
+
+            var myBarChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: options
+            });               
+
+        },
+        error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+        }
+        
+        })
+             
+        // Duplicate files list
+                $.ajax({
+            method: "GET",
+            url: "{% url 'duplicate-files' %}",
+            success: function(data){
+                
+                
+                
+var result = {};
+for (var key in data){
+
+    if(!result.hasOwnProperty(data[key][0])) result[data[key][0]] = [];
+    result[data[key][0]].push(key);
+    }
+var numberOfKeys = Object.keys(result).length
+var numberOfValues = Object.keys(result).length
+
+                
+var list_holder = document.getElementById("dupeTable")
+var table = document.createElement('table');
+    table.width = '100%';
+var tableBody = document.createElement('tbody');
+
+var th = document.createElement("th")
+    tableBody.appendChild(th);
+    th.appendChild(document.createTextNode("File Name"));
+
+var th = document.createElement("th")
+    tableBody.appendChild(th);
+    th.appendChild(document.createTextNode("Duplicate Location 1"));
+var th = document.createElement("th")
+    tableBody.appendChild(th);
+    th.appendChild(document.createTextNode("Duplicate Location 2"));
+
+
+for (const [ key, value ] of Object.entries(result)) {
+    
+
+    table.appendChild(tableBody);
+    
+    var tr = document.createElement('tr');
+        tableBody.appendChild(tr);
+    var tdFileName = document.createElement('td');
+    var tdDupeLocation1 = document.createElement('td');
+    var tdDupeLocation2 = document.createElement('td');
+        tdDupeLocation1.appendChild(document.createTextNode(value[0]));
+        tdDupeLocation2.appendChild(document.createTextNode(value[1]));
+        tdFileName.appendChild(document.createTextNode(key));
+        tr.appendChild(tdFileName);
+        tr.appendChild(tdDupeLocation1);
+        tr.appendChild(tdDupeLocation2);
+        list_holder.appendChild(table);
+        }  
+                                
+        },
+        error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+        }
+        
+        })
+             
+        })
+
+        {% endblock jquery %}
+        </script>
+    </head>
+    <body>
+ 
+                {% if user.is_authenticated %}
+        
+        <div id="waterfall-wrapper" style="width: 350px;">
+            <div class="panel-header" style="width: 350px;">
+                <div class="panel-title" style="width: 350px;">Usage</div>
+            </div>
+        <div style="width:350px; height:300px;">
+              <canvas id="usageChart" style="width:100%; height:100%;"></canvas>
+        </div>        
+        </div>      
+            
+        <div id="waterfall-wrapper" style="width: 350px;">
+            <div class="panel-header" style="width: 350px;">
+                <div class="panel-title" style="width: 350px;">Count</div>
+            </div>
+        <table id="countTable" style="background: white; width: 350px; height: 300px; margin-left: 10px;">
+            <tr>
+                <td><img src="../../../static/img/file.png" style="height:50px;"></td>
+                <td style="text-align: left";>Files</td>
+                <td style="text-align: center;" id="filesRow"></td> 
+            </tr> 
+            <tr> 
+                <td><img src="../../../static/img/folder.png" style="height: 50px;"></td> 
+                <td style="text-align: left">Folders</td>
+                <td style="text-align: center" id="foldersRow"></td> 
+            </tr> 
+            <tr> 
+                <td><img src="../../../static/img/list.png" style="height:50px;"></td>
+                <td style="text-align: left">All</td>
+                <td style="text-align: center" id="totalRow"></td> 
+            </tr> 
+        </table>
+        </div>
+        
+<!--        Table for Files Categories-->
+        <div id="waterfall-wrapper">
+            <div class="panel-header">
+                <div class="panel-title">Categories</div>
+            </div>
+        <table id="" style="background: white; min-width: 400px; height: 300px; margin-left: 10px;">
+            <tr>
+                <td><img src="../../../static/img/picture.png" style="height:40px;"></td>
+                <td style="text-align: left";>Images</td>
+                <td style="text-align: right;" id="imagesNumber"></td> 
+                <td style="text-align: right;" id="imagesSize"></td> 
+                <td style="text-align: center;" id="imagesWeight"></td> 
+            </tr> 
+            <tr>
+                <td><img src="../../../static/img/speaker.png" style="height:40px;"></td>
+                <td style="text-align: left";>Audio</td>
+                <td style="text-align: right;" id="audiosNumber"></td> 
+                <td style="text-align: right;" id="audiosSize"></td> 
+                <td style="text-align: center;" id="audiosWeight"></td> 
+            </tr> 
+            <tr> 
+                <td><img src="../../../static/img/video-player.png" style="height:40px;"></td>
+                <td style="text-align: left">Videos</td>
+                <td style="text-align: right" id="videosNumber"></td> 
+                <td style="text-align: right;" id="videosSize"></td>
+                <td style="text-align: center;" id="videosWeight"></td> 
+            </tr> 
+            <tr> 
+                <td><img src="../../../static/img/document.png" style="height:40px;"></td>
+                <td style="text-align: left">Documents</td>
+                <td style="text-align: right" id="docsNumber"></td>
+                <td style="text-align: right;" id="docsSize"></td>
+                <td style="text-align: center;" id="docsWeight"></td> 
+            </tr> 
+            <tr> 
+                <td><img src="../../../static/img/briefcase.png" style="height:40px;"></td>
+                <td style="text-align: left">Others</td>
+                <td style="text-align: right" id="othersNumber"></td> 
+                <td style="text-align: right;" id="othersSize"></td>
+                <td style="text-align: center;" id="othersWeight"></td> 
+            </tr> 
+            <tr> 
+                <td><img src="../../../static/img/list.png" style="height:40px;"></td>
+                <td style="text-align: left">All</td>
+                <td style="text-align: right" id="allNumber"></td> 
+                <td style="text-align: right;" id="allSize"></td> 
+                <td style="text-align: center;" id="allWeight"></td> 
+            </tr> 
+        </table>
+            </div>
+        
+        
+                <div id="waterfall-wrapper">
+            <div class="panel-header">
+                <div class="panel-title">Duplicate Files</div>
+            </div>
+            <div id="dupeTable" style="background: white; width: 96vw; height: 200px; margin-left: 10px;"></div>
+            </div>
+
+        
+                {% if messages %}
+                    {% for message in messages %}
+                        <a {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+                    {% endfor %}
+                {% endif %}
+                <div class="logout">
+                    <a href="{% url 'auth_logout' %}">
+                        <button type="button" class="btn btn-outline-primary">Logout</button>
+                    </a>
+                </div>
+                {% else %}
+                <div class="button-wrapper">
+                    <a href="{% url 'auth_login' %}">
+                        <button type="button" class="btn btn-outline-primary" style="width:150px">Login</button>
+                    </a>
+                    <a href="{% url 'registration_register' %}">
+                        <button type="button" class="btn btn-outline-primary" style="width:150px">Register</button>
+                    </a>
+                </div>
+                {% endif %}
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        
+        {% endblock content %}
+    </body>
+    <footer>
+            {% block footer %}
+            {% endblock footer %}
+
+    </footer>
+</html>

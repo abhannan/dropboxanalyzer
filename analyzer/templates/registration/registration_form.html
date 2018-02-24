@@ -1,0 +1,14 @@
+{% extends 'analyzer/index.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Registration Form - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+    <form role="form" action="" method="post" class="reg-form">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Register" class="btn btn-primary"/>
+    </form>
+{% endblock content %}
