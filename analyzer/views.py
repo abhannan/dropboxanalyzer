@@ -25,7 +25,7 @@ def index(request):
     return render(request, 'analyzer/index.html')
 
 
-redirect_uri = "http://localhost:8000/dropbox-auth-finish/"
+redirect_uri = "https://dropboxanalyzer.herokuapp.com//dropbox-auth-finish/"
 APP_KEY = '2pof6tw15b5u3mz'
 APP_SECRET = 'u11xcw5h9fh5k5j'
 
