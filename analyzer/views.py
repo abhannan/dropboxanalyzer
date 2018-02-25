@@ -10,7 +10,6 @@ from rest_framework import generics
 from .serializers import UserUsageInfoSerializer
 import dropbox
 import itertools
-import datetime
 
 
 class UserCreateForm(UserCreationForm):
@@ -25,9 +24,9 @@ def index(request):
     return render(request, 'analyzer/index.html')
 
 
-redirect_uri = "https://dropboxanalyzer.herokuapp.com/dropbox-auth-finish/"
-APP_KEY = '2pof6tw15b5u3mz'
-APP_SECRET = 'u11xcw5h9fh5k5j'
+redirect_uri = ""
+APP_KEY = ''
+APP_SECRET = ''
 
 
 def make_connection_to_user_dbx(request):
