@@ -10,8 +10,8 @@ class UserInfoAdmin(admin.ModelAdmin):
 
 class UserDropboxDataAdmin(admin.ModelAdmin):
     model = UserUsageInfo
-    list_display = ('user', 'space_allocated', 'space_used', 'files_list',
-                    'folders_list', 'files_hash_list', 'data_available_or_not')
+    list_display = ('user', 'space_allocated', 'space_used', 'data_available_or_not', 'files_hash_list',
+                    'folders_list', 'files_list')
 
 admin.site.register(UserAccessInfo, UserInfoAdmin)
 admin.site.register(UserUsageInfo, UserDropboxDataAdmin)
