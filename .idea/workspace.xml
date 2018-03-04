@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6909d50c-6eb5-4c3a-93ae-e24b06382e3c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analyzer/admin.py" afterPath="$PROJECT_DIR$/analyzer/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analyzer/templates/analyzer/dashboard.html" afterPath="$PROJECT_DIR$/analyzer/templates/analyzer/dashboard.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analyzer/views.py" afterPath="$PROJECT_DIR$/analyzer/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +18,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/analyzer/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+            <state relative-caret-position="195">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -41,8 +39,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/analyzer/serializers.py" />
-        <option value="$PROJECT_DIR$/analyzer/views.py" />
         <option value="$PROJECT_DIR$/analyzer/admin.py" />
+        <option value="$PROJECT_DIR$/analyzer/views.py" />
       </list>
     </option>
   </component>
@@ -230,8 +228,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/analyzer/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        <state relative-caret-position="195">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
         </state>
       </provider>
