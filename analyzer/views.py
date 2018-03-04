@@ -25,6 +25,7 @@ def index(request):
 
 
 redirect_uri = "https://dropboxanalyzer.herokuapp.com/dropbox-auth-finish/"
+# redirect_uri = "http://localhost:8000/dropbox-auth-finish/"
 APP_KEY = '2pof6tw15b5u3mz'
 APP_SECRET = 'u11xcw5h9fh5k5j'
 
@@ -39,7 +40,10 @@ def make_connection_to_user_dbx(request):
 def get_user_space_info(request):
     dbx = make_connection_to_user_dbx(request)
     used_space = dbx.users_get_space_usage().used
-    allocated_space = dbx.users_get_space_usage().allocation.get_team().allocated
+    if dbx.users_get_current_account().team is None:
+        allocated_space = dbx.users_get_space_usage().allocation.get_individual().allocated
+    else:
+        allocated_space = dbx.users_get_space_usage().allocation.get_team().allocated
     return used_space, allocated_space
 
 
