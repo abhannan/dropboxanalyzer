@@ -25,8 +25,8 @@
          $(document).ready(function() { 
              
         function fileSize(bytes) {
-            var exp = Math.log(bytes) / Math.log(1024) | 0;
-            var result = (bytes / Math.pow(1024, exp)).toFixed(0);
+            var exp = Math.log(bytes) / Math.log(1000) | 0;
+            var result = (bytes / Math.pow(1000, exp)).toFixed(0);
 
             return result + ' ' + (exp == 0 ? 'bytes': 'KMGTPEZY'[exp - 1] + 'B');
         }
