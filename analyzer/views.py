@@ -24,8 +24,8 @@ def index(request):
     return render(request, 'analyzer/index.html')
 
 
-redirect_uri = "https://dropboxanalyzer.herokuapp.com/dropbox-auth-finish/"
-# redirect_uri = "http://localhost:8000/dropbox-auth-finish/"
+# redirect_uri = "https://dropboxanalyzer.herokuapp.com/dropbox-auth-finish/"
+redirect_uri = "http://localhost:8000/dropbox-auth-finish/"
 APP_KEY = '2pof6tw15b5u3mz'
 APP_SECRET = 'u11xcw5h9fh5k5j'
 
@@ -51,14 +51,25 @@ def get_user_files_info(request):
     folders = list()
     files = dict()
     files_hash = dict()
+
     dbx = make_connection_to_user_dbx(request)
+    result = dbx.files_list_folder("", recursive=True)
+
+    def process_entries(entries):
+        for entry in entries:
+            if isinstance(entry, dropbox.files.FileMetadata):
+                files[entry.id + "___" + entry.name] = entry.size
+                files_hash[entry.id + "___" + entry.name] = entry.content_hash
+            elif isinstance(entry, dropbox.files.FolderMetadata):
+                folders.append(entry.id + "___" + entry.name)
+
+    process_entries(result.entries)
+
+    while result.has_more:
+        result = dbx.files_list_folder_continue(result.cursor)
+        process_entries(result.entries)
+
     used_space, allocated_space = get_user_space_info(request)
-    for entry in dbx.files_list_folder('', recursive=True).entries:
-        if isinstance(entry, dropbox.files.FileMetadata):
-            files[entry.id + "___" + entry.name] = entry.size
-            files_hash[entry.id + "___" + entry.name] = entry.content_hash
-        elif isinstance(entry, dropbox.files.FolderMetadata):
-            folders.append(entry.id + "___" + entry.name)
 
     UserUsageInfo.objects.create(user=request.user,
                                  space_used=used_space,
@@ -133,18 +144,35 @@ def get_duplicate_files(request):
 
     list_of_dupes = [file_ids for file_hash, file_ids in reversed_dict.items() if len(file_ids) > 1]
 
-    # number_of_dupes = len(list_of_dupes)
+    number_of_dupes = len(list_of_dupes)
 
     dbx = make_connection_to_user_dbx(request)
     dupe_dict = dict()
     dupe_list = list()
+    splitted_items_list = list()
+    result = dbx.files_list_folder('', recursive=True)
 
-    for item in itertools.chain.from_iterable(list_of_dupes):
-        splitted_items = item.split("___")
-        for entry in dbx.files_list_folder('', recursive=True).entries:
-            if splitted_items[0] == entry.id:
-                dupe_list.append(entry.path_display)
-                dupe_dict[entry.path_display] = [entry.name, entry.client_modified]
+    def process_entries(entries):
+        for item in itertools.chain.from_iterable(list_of_dupes):
+            splitted_items = item.split("___")
+            splitted_items_list.append(splitted_items[0])
+
+    process_entries(list_of_dupes)
+
+    def check_in_m1(splitted_list, m1):
+        for item in splitted_list:
+            for entry in m1.entries:
+                if isinstance(entry, dropbox.files.FileMetadata):
+                    if item == entry.id:
+                        dupe_list.append(entry.path_display)
+                        dupe_dict[entry.path_display] = [entry.content_hash, entry.client_modified]
+
+    check_in_m1(splitted_items_list, result)
+
+    while result.has_more:
+        result = dbx.files_list_folder_continue(result.cursor)
+        check_in_m1(splitted_items_list, result)
+
     return JsonResponse(dupe_dict)
 
 
