@@ -26,8 +26,8 @@ def index(request):
 
 redirect_uri = "https://dropboxanalyzer.herokuapp.com/dropbox-auth-finish/"
 # redirect_uri = "http://localhost:8000/dropbox-auth-finish/"
-APP_KEY = ''
-APP_SECRET = ''
+APP_KEY = '2pof6tw15b5u3mz'
+APP_SECRET = 'u11xcw5h9fh5k5j'
 
 
 def make_connection_to_user_dbx(request):
